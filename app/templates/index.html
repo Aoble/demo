@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目总结</title>
+    <script src="../static/js/echarts5.js"></script>
+    <script src="../static/js/china.js"></script>
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/china.js"></script>
+</head>
+<body>
+<div id="one" style="width: 100%; height: 600px;"></div>
+<div id="two" style="width: 100%; height: 600px;"></div>
+<div id="three" style="width: 100%; height: 600px;"></div>
+<div id="four" style="width: 100%; height: 600px;"></div>
+<div id="five" style="width: 100%; height: 600px;"></div>
+<div id="six" style="width: 100%; height: 600px;"></div>
+<script>
+    let one_bj = {{ one[0] | safe}}
+    let one_sz = {{ one[1] | safe}}
+    let myChart1 = echarts.init(document.getElementById('one'));
+    let option1 = {
+        title:[{
+        text: '北京商户业务包属性占比',
+        left: '20%',
+    },{
+         text: '深圳商户业务包属性占比',
+         left: '70%',
+    }],
+        tooltip: {
+            show:'true'
+        },
+        series:[{
+            name: '北京商户业务包属性占比',
+            data: one_bj,
+            type: 'pie',
+            center: ['25%', '50%'],
+        },{
+            name: '深圳商户业务包属性占比',
+            data: one_sz,
+            type: 'pie',
+            center: ['75%', '50%'],
+        }]
+    }
+    myChart1.setOption(option1);
+
+    let two_x = {{two[0] | tojson}}
+    let two_y1 = {{two[1]}}
+    let two_y2 = {{two[2]}}
+    let myChart2 = echarts.init(document.getElementById('two'));
+    let option2 = {
+        title: {text:'各业务包评价组成',
+                left:'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {},
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: two_x
+        },
+        yAxis: {},
+        series: [
+            {
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: true
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: two_y2,
+                color:'red'
+            },
+            {
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: true
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: two_y1,
+                color:'black'
+            }
+        ]
+    };
+    myChart2.setOption(option2)
+
+    let three = {{ three |safe }}
+    let myChart3 = echarts.init(document.getElementById('three'));
+    let option3 = {
+        tooltip: {
+            show:'true'
+        },
+        title:{
+            text:"北京商户业务包投诉占比",
+            left:'center'
+        },
+        series:[{
+            data:three,
+            roseType: 'radius',
+            type: 'pie'
+        }]
+    }
+    myChart3.setOption(option3);
+
+    let four = {{ four | safe }};
+    let myChart4 = echarts.init(document.getElementById('four'));
+    let option4 = {
+        yAxis:{
+            scale:true
+        },
+        xAxis:{
+            scale:true
+        },
+        title:{
+            text:'商家聚集地理位置展示',
+            left:'center'
+        },
+        series : [{
+            data:four,
+            type:'scatter',
+            symbolSize:function (data){
+                return data[2]/10
+            }
+        }]
+    };
+    myChart4.setOption(option4);
+
+    let a_id = {{ five[0] | tojson}};
+    let a_cnt = {{ five[1] | safe}};
+    let b_id = {{ five[2] | tojson}};
+    let b_cnt = {{ five[3] | safe}};
+    let myChart5 = echarts.init(document.getElementById('five'));
+    let option5 = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+        title: {
+					text: "各平台30天销量最高10大商家",
+                    left:'center'
+				},
+        xAxis:[{
+            data:a_id,
+            type:'category',
+            position:'bottom',
+            axisLabel: {
+                interval:0,
+                rotate:40,
+                margin:20,
+                },
+            axisLine:{
+                onZero:false,
+                lineStyle: {
+                color:'red'}
+            }
+        },
+            {
+                data: b_id,
+                type:'category',
+                position:'bottom',
+                axisLabel: {
+                    interval:0,
+                    rotate:40,
+                    },
+                axisLine:{
+                    onZero:false,
+                    lineStyle:{
+                    color: 'blue'}
+                }
+            }],
+        yAxis:{
+            type:'value',
+            scale: true
+        },
+        series:[{
+            data: a_cnt,
+            type: 'line',
+            color:'blue'
+            },
+            {
+                data: b_cnt,
+                type: 'line',
+                color:'red'
+            }]
+    }
+    myChart5.setOption(option5);
+
+    let six_x = {{six[0] | tojson}}
+    let six_y = {{six[1] }}
+    let myChart6 = echarts.init(document.getElementById('six'));
+    option6 = {
+        title: {
+            text: '各营业区间商家数量对比',
+            left:'center'
+        },
+        tooltip: {
+            show:true,
+            trigger: 'item'
+        },
+        legend:{},
+        xAxis:{
+            data:six_x
+        },
+        yAxis:{
+            type:'value'
+        },
+        series:{
+            data:six_y,
+            type:'bar'
+        }
+    }
+    myChart6.setOption(option6);
+</script>
+</body>
+</html>
